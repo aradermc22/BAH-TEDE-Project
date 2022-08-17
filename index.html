@@ -66,7 +66,7 @@
         <div class="col-sm-10">
             <h3>[Insert current visualization title here]</h3>
             <p>[Upon click, the clicked-on visualization should show here.]</p>
-            <img src="https://via.placeholder.com/600x400.png" class="mx-auto d-block">
+            <img id ="mainviz" src="https://via.placeholder.com/600x400.png" class="mx-auto d-block">
         </div>
         <div class="col-sm-1"></div>
         
@@ -83,12 +83,10 @@
             <div class="row">    
         <div class="col-sm-3">
             <div class="card">
-                <img class="card-img-top" src="https://via.placeholder.com/100x75.png" alt="Card image">
+                <img class="card-img-top" id="firstviz" src="https://via.placeholder.com/100x75/FF0000/FFFFFF" alt="Card image" >
                 <div class="card-body">
                   <h4 class="card-title">Name of 1st Viz</h4>
-                  <p class="card-text">Some example text.  If we want to explain the viz, we can do it here.  
-                    Also, the link below can fit the js/flask for the image selection.</p>
-                  <a href="#" class="btn btn-primary">Expand visualization</a>
+                  <a href="#" class="btn btn-primary" id="firstvizbtn" onclick="showFirstViz()" >Click here to expand visualization</a>
                 </div>
               </div>
         </div>
@@ -97,8 +95,6 @@
                 <img class="card-img-top" src="https://via.placeholder.com/100x75.png" alt="Card image">
                 <div class="card-body">
                   <h4 class="card-title">Name of 2nd Viz</h4>
-                  <p class="card-text">Some example text.  If we want to explain the viz, we can do it here.  
-                    Also, the link below can fit the js/flask for the image selection.</p>
                   <a href="#" class="btn btn-primary">Expand visualization</a>
                 </div>
               </div>
@@ -108,8 +104,6 @@
                 <img class="card-img-top" src="https://via.placeholder.com/100x75.png" alt="Card image">
                 <div class="card-body">
                   <h4 class="card-title">Name of 3rd Viz</h4>
-                  <p class="card-text">Some example text.  If we want to explain the viz, we can do it here.  
-                    Also, the link below can fit the js/flask for the image selection.</p>
                   <a href="#" class="btn btn-primary">Expand visualization</a>
                 </div>
               </div>
@@ -119,8 +113,6 @@
                 <img class="card-img-top" src="https://via.placeholder.com/100x75.png" alt="Card image">
                 <div class="card-body">
                   <h4 class="card-title">Name of 4th Viz</h4>
-                  <p class="card-text">Some example text.  If we want to explain the viz, we can do it here.  
-                    Also, the link below can fit the js/flask for the image selection.</p>
                   <a href="#" class="btn btn-primary">Expand visualization</a>
                 </div>
               </div>
@@ -138,6 +130,18 @@
 <div class="container">
 
 </div>
+
+
+<script>
+  function showFirstViz() {
+//    var firstviz = "https://via.placeholder.com/600x400.png"
+    document.getElementById("firstvizbtn").style.background = "#e28743"
+    document.getElementById("mainviz").src = "https://via.placeholder.com/600x400/FF0000/FFFFFF";
+    
+//    pic.replace('', 'https://img.tesco.com/Groceries/pi/118/5000175411118/IDShot_90x90.jpg');
+  }
+  </script>
+
 
 </body>
 </html>
