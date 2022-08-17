@@ -35,7 +35,7 @@
         border-radius: 15px;
         padding: 10px;
         width: 300px;
-        height: 450px;
+        height: 375px;
     }
 
     .card-title {
@@ -57,14 +57,14 @@
 
 <div class="jumbotron text-center">
   <h1>Best Group's TEDE Project</h1>
-  <p>This part's where we put the info about what we're looking to achieve in this project</p> 
+  <p>Visuzalising Gaming Trends on Steam</p> 
 </div>
 
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-sm-1"></div>
         <div class="col-sm-10">
-            <h3>[Insert current visualization title here]</h3>
+            <h3 id="mainviztitle">[Insert current visualization title here]</h3>
             <p>[Upon click, the clicked-on visualization should show here.]</p>
             <img id ="mainviz" src="https://via.placeholder.com/600x400.png" class="mx-auto d-block">
         </div>
@@ -85,35 +85,35 @@
             <div class="card">
                 <img class="card-img-top" id="firstviz" src="https://via.placeholder.com/100x75/FF0000/FFFFFF" alt="Card image" >
                 <div class="card-body">
-                  <h4 class="card-title">Name of 1st Viz</h4>
-                  <a href="#" class="btn btn-primary" id="firstvizbtn" onclick="showFirstViz()" >Click here to expand visualization</a>
+                  <h4 class="card-title" id="firstviztitle">Name of 1st Viz</h4>
+                  <a href="#" class="btn btn-primary" id="firstvizbtn" onclick="showFirstViz()" >Click here to expand first visualization</a>
                 </div>
               </div>
         </div>
         <div class="col-sm-3">
             <div class="card">
-                <img class="card-img-top" src="https://via.placeholder.com/100x75.png" alt="Card image">
+                <img class="card-img-top" src="https://via.placeholder.com/100x75/0000FF/808080" alt="Card image">
                 <div class="card-body">
-                  <h4 class="card-title">Name of 2nd Viz</h4>
-                  <a href="#" class="btn btn-primary">Expand visualization</a>
+                  <h4 class="card-title" id="secondviztitle">Name of 2nd Viz</h4>
+                  <a href="#" class="btn btn-primary" id="secondvizbtn" onclick="showSecondViz()" >Click here to expand second visualization</a>
                 </div>
               </div>
         </div>
         <div class="col-sm-3">
             <div class="card">
-                <img class="card-img-top" src="https://via.placeholder.com/100x75.png" alt="Card image">
+                <img class="card-img-top" src="https://via.placeholder.com/100x75/FFFF00/000000" alt="Card image">
                 <div class="card-body">
-                  <h4 class="card-title">Name of 3rd Viz</h4>
-                  <a href="#" class="btn btn-primary">Expand visualization</a>
+                  <h4 class="card-title" id="thirdviztitle">Name of 3rd Viz</h4>
+                  <a href="#" class="btn btn-primary" id="thirdvizbtn" onclick="showThirdViz()" >Click here to expand third visualization</a>
                 </div>
               </div>
         </div>
         <div class="col-sm-3">
             <div class="card">
-                <img class="card-img-top" src="https://via.placeholder.com/100x75.png" alt="Card image">
+                <img class="card-img-top" src="https://via.placeholder.com/100x75/00FF00/000000" alt="Card image">
                 <div class="card-body">
-                  <h4 class="card-title">Name of 4th Viz</h4>
-                  <a href="#" class="btn btn-primary">Expand visualization</a>
+                  <h4 class="card-title" id="fourthviztitle">Name of 4th Viz</h4>
+                  <a href="#" class="btn btn-primary"id="fourthvizbtn" onclick="showFourthViz()" >Click here to expand fourth visualization</a>
                 </div>
               </div>
         </div>
@@ -134,12 +134,30 @@
 
 <script>
   function showFirstViz() {
-//    var firstviz = "https://via.placeholder.com/600x400.png"
+    document.getElementById("firstviztitle").style.color = "#e28743"
     document.getElementById("firstvizbtn").style.background = "#e28743"
-    document.getElementById("mainviz").src = "https://via.placeholder.com/600x400/FF0000/FFFFFF";
-    
-//    pic.replace('', 'https://img.tesco.com/Groceries/pi/118/5000175411118/IDShot_90x90.jpg');
+    document.getElementById("mainviz").src = "https://via.placeholder.com/600x400/FF0000/FFFFFF"
+//    document.getElementById("mainviztitle").replace("xyz", "zyx") ;
   }
+
+  function showSecondViz() {
+    document.getElementById("secondviztitle").style.color = "#e28743"
+    document.getElementById("secondvizbtn").style.background = "#e28743"
+    document.getElementById("mainviz").src = "https://via.placeholder.com/600x400/0000FF/808080";
+  }
+
+  function showThirdViz() {
+    document.getElementById("thirdviztitle").style.color = "#e28743"
+    document.getElementById("thirdvizbtn").style.background = "#e28743"
+    document.getElementById("mainviz").src = "https://via.placeholder.com/600x400/FFFF00/000000";
+  }
+  
+  function showFourthViz() {
+    document.getElementById("fourthviztitle").style.color = "#e28743"
+    document.getElementById("fourthvizbtn").style.background = "#e28743"
+    document.getElementById("mainviz").src = "https://via.placeholder.com/600x400/00FF00/000000";
+  }
+
   </script>
 
 
