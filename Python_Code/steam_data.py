@@ -1,3 +1,4 @@
+from venv import create
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,12 +6,17 @@ import seaborn as sns
 from scipy.stats import pearsonr
 import pyodbc
 from sqlalchemy import create_engine
+from sqlalchemy.engine import URL
+import datetime as dt
+
 
 
 connection_string = ('Driver={ODBC Driver 17 for SQL Server};Server=tcp:unstructured-data-server.database.windows.net,1433;Database=unstructured-data;Uid=project-admin;Pwd={password22$};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+connection_url = URL.create('mssql+pyodbc', query={'odbc_connect': connection_string})
+engine = create_engine(connection_url, fast_executemany=True)
 
-engine = create_engine('mssql+pyodbc:///?odbc_connect=%s' % connection_string)
-
+connection = engine.raw_connection()
+cursor = connection.cursor()
 steam_data = pd.read_sql('SELECT * FROM steam_source_data', engine)
 
 #Make sure data types are correct
@@ -58,7 +64,7 @@ top_ten_listed_genres = broken_out_genres_df['genres'].value_counts()
 top_ten_listed_genres = top_ten_listed_genres[0:10]
 top_ten_listed_genres = top_ten_listed_genres.reset_index()
 top_ten_listed_genres = pd.DataFrame(top_ten_listed_genres, columns=['Genre', 'Count'])
-top_ten_listed_genres.to_sql('Top_Ten_Listed_Genres', engine, if_exists='replace')
+top_ten_listed_genres.to_sql('Top_Ten_Listed_Genres', engine, if_exists='replace', index=False)
 
 #Highest average playtime on game by genre
 playtime_df = steam_data.filter(items=['appid', 'average_playtime(hours)'])
@@ -66,7 +72,7 @@ most_played_genres = broken_out_genres_df.merge(playtime_df, on='appid')
 most_played_genres = most_played_genres.loc[most_played_genres.groupby('genres')['average_playtime(hours)'].idxmax()]
 most_played_genres = most_played_genres.sort_values('average_playtime(hours)', ascending=False)
 top_ten_most_played_genres = most_played_genres[0:10]
-top_ten_most_played_genres.to_sql('Top_Ten_Most_Played_Genres', engine, if_exists='replace')
+top_ten_most_played_genres.to_sql('Top_Ten_Most_Played_Genres', engine, if_exists='replace', index=False)
 
 
 #Highiest total average playtime by genre
@@ -75,7 +81,7 @@ most_total_played_genres = broken_out_genres_df.merge(playtime_df, on='appid').d
 most_total_played_genres = most_total_played_genres.groupby('genres', as_index=False).agg(average_playtime_total=('average_playtime(hours)', 'sum'))
 most_total_played_genres = most_total_played_genres.sort_values('average_playtime_total', ascending=False)
 top_ten_total_played_genres = most_total_played_genres[0:10]
-top_ten_total_played_genres.to_sql('Top_Ten_Total_Played_Genres', engine, if_exists='replace')
+top_ten_total_played_genres.to_sql('Top_Ten_Total_Played_Genres', engine, if_exists='replace', index=False)
 
 
 #Which publishers have the game with the highest average playtime
@@ -83,7 +89,7 @@ playtime_df = steam_data.filter(items=['appid', 'average_playtime(hours)'])
 most_played_publishers = broken_out_publishers_df.merge(playtime_df, on='appid')
 most_played_publishers = most_played_publishers.sort_values('average_playtime(hours)', ascending=False)
 top_ten_played_publishers = most_played_publishers[0:10]
-top_ten_played_publishers.to_sql('Top_Ten_Played_Publishers', engine, if_exists='replace')
+top_ten_played_publishers.to_sql('Top_Ten_Played_Publishers', engine, if_exists='replace', index=False)
 
 
 #Which developers have the game with the highest average playtime
@@ -95,7 +101,7 @@ top_ten_played_developers.to_sql('Top_Ten_Played_Developers', engine, if_exists=
 developer = pd.get_dummies(top_ten_played_developers['developer'])
 playtime = top_ten_played_developers['average_playtime(hours)']
 df = pd.concat([developer, playtime], axis=1)
-df.to_sql('Developers_Correlation_Matrix', engine, if_exists='replace')
+df.to_sql('Developers_Correlation_Matrix', engine, if_exists='replace', index=False)
 #print(df.corr(method='pearson'))
 
 
@@ -110,3 +116,16 @@ gr_corr, _ = pearsonr(good_reviews, playtime)
 br_corr, _ = pearsonr(bad_reviews, playtime)
 # print(f'The correlation between good reviews and the average playtime in hours is {round(gr_corr,2)}')
 # print(f'The correlation between bad reviews and the average playtime in hours is {round(br_corr,2)}')
+
+#Developer # of Games released by year
+steam_data['release_date'] = pd.to_datetime(steam_data['release_date'])
+dates = steam_data.filter(items=['appid', 'release_date'])
+merged_df = pd.merge(broken_out_developers_df, dates, on='appid')
+merged_df['release_year'] = pd.DatetimeIndex(merged_df['release_date']).year
+merged_df = merged_df.drop(columns=['release_date','appid'])
+counts = merged_df.groupby(['developer', 'release_year'], as_index=False).size()
+counts.reset_index()
+counts = pd.DataFrame(counts)
+counts = counts.rename(columns={'size': 'Count'})
+counts = counts.sort_values(['release_year', 'Count'], ascending=[True,False])
+counts.to_sql('Developer_Released_Games_By_Year', engine, if_exists='replace', index=False)
