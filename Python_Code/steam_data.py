@@ -1,4 +1,4 @@
-from venv import create
+from __future__ import unicode_literals
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,6 +8,10 @@ import pyodbc
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 import datetime as dt
+import plotly.express as px
+import plotly
+import json
+
 
 
 
@@ -71,8 +75,14 @@ playtime_df = steam_data.filter(items=['appid', 'average_playtime(hours)'])
 most_played_genres = broken_out_genres_df.merge(playtime_df, on='appid')
 most_played_genres = most_played_genres.loc[most_played_genres.groupby('genres')['average_playtime(hours)'].idxmax()]
 most_played_genres = most_played_genres.sort_values('average_playtime(hours)', ascending=False)
-top_ten_most_played_genres = most_played_genres[0:10]
-top_ten_most_played_genres.to_sql('Top_Ten_Most_Played_Genres', engine, if_exists='replace', index=False)
+top_hundred_most_played_genres = most_played_genres[0:100]
+plt.title('Top Ten Genres with the Highest Average Playtime')
+plt.xlabel('Genre')
+plt.ylabel('Playtime(hours)')
+scatter = sns.scatterplot(x='genres', y='average_playtime(hours)', data=top_hundred_most_played_genres)
+scatter.set_xticklabels(top_hundred_most_played_genres['genres'], rotation=90)
+plt.show()
+top_hundred_most_played_genres.to_sql('Top_Hundred_Most_Played_Genres', engine, if_exists='replace', index=False)
 
 
 #Highiest total average playtime by genre
@@ -97,10 +107,20 @@ playtime_df = steam_data.filter(items=['appid', 'average_playtime(hours)'])
 most_played_developers = broken_out_developers_df.merge(playtime_df, on='appid')
 most_played_developers = most_played_developers.sort_values('average_playtime(hours)', ascending=False)
 top_ten_played_developers = most_played_developers[0:10]
-top_ten_played_developers.to_sql('Top_Ten_Played_Developers', engine, if_exists='replace')
+top_ten_played_developers.to_sql('Top_Ten_Played_Developers', engine, if_exists='replace', index=False)
+plt.title('Top Ten Developers with the Highest Average Playtime')
+plt.xlabel('Developer')
+plt.ylabel('Playtime(hours)')
+bar = sns.barplot(x='developer', y='average_playtime(hours)', data=top_ten_played_developers)
+bar.set_xticklabels(top_ten_played_developers['developer'], rotation=45)
+plt.show()
 developer = pd.get_dummies(top_ten_played_developers['developer'])
 playtime = top_ten_played_developers['average_playtime(hours)']
 df = pd.concat([developer, playtime], axis=1)
+plt.matshow(df.corr())
+cb = plt.colorbar()
+plt.title('Correlation Matrix')
+plt.show()
 df.to_sql('Developers_Correlation_Matrix', engine, if_exists='replace', index=False)
 #print(df.corr(method='pearson'))
 
@@ -128,4 +148,11 @@ counts.reset_index()
 counts = pd.DataFrame(counts)
 counts = counts.rename(columns={'size': 'Count'})
 counts = counts.sort_values(['release_year', 'Count'], ascending=[True,False])
+counts['total'] = counts.groupby(['developer'])['Count'].transform('count')
+counts = counts[counts['total'] > 9]
+plt.title('Games Released By Year')
+plt.xlabel('Year')
+plt.ylabel('Number of Games')
+sns.lineplot(x='release_year', y='Count', hue='developer', data=counts)
+plt.show()
 counts.to_sql('Developer_Released_Games_By_Year', engine, if_exists='replace', index=False)
