@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+
+    
+    .jumbotron h1 {
+        color: #e28743;
+    }
+
+    .jumbotron p {
+        color: #063970;
+    }
+
+    .container-fluid{
+        background-color: #fffcf9;
+        text-align: center;
+    }
+
+    .container-fluid h3 {
+            color: #063970;
+        }
+
+    .card {
+        text-align: center;
+        background-color: #fbf5f4;
+        border-radius: 15px;
+        padding: 10px;
+        width: 300px;
+        height: 375px;
+    }
+
+    .card-title {
+            color: #3F8EFC;
+        }
+    
+    .card-text {
+            color: #063970;
+        }    
+    
+    ::selection {
+        color: #e28743;
+    }
+
+
+    </style>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Gamer Group's TEDE Project</h1>
+  <p>Visuzalising Gaming Trends on Steam</p> 
+</div>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <h3 id="mainviztitle"><!--[Insert current visualization title here]--> Main Display</h3>
+            <p><!--[Upon click, the clicked-on visualization should show here.]--></p>
+            <img id ="mainviz" src="{{ url_for('viz1') }}" class="mx-auto d-block">
+        </div>
+        <div class="col-sm-1"></div>
+        
+    </div>        
+
+    <div class="row">
+        <br>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+
+            <div class="row">    
+        <div class="col-sm-3">
+            <div class="card">
+                <img class="card-img-top" id="firstviz" src="{{ url_for('viz1') }}" alt="Card image" >
+                <div class="card-body">
+                  <h4 class="card-title" id="firstviztitle"><!--Name of 1st Viz--> Line Graph</h4>
+                  <a href="#" class="btn btn-primary" id="firstvizbtn" onclick="showFirstViz()" ><!--Click here to expand first visualization-->Games realeased by year</a>
+                </div>
+              </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <img class="card-img-top"  src="https://webagestoredzc15.blob.core.windows.net/project-test/barplot.png" alt="Card image">
+                <div class="card-body">
+                  <h4 class="card-title" id="secondviztitle"><!--Name of 2nd Viz-->Bar Plot</h4>
+                  <a href="#" class="btn btn-primary" id="secondvizbtn" onclick="showSecondViz()" >Top 10 developers with highest playtime<!--Click here to expand second visualization--></a>
+                </div>
+              </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <img class="card-img-top" src="https://webagestoredzc15.blob.core.windows.net/project-test/correlationmatrix.png" alt="Card image">
+                <div class="card-body">
+                  <h4 class="card-title" id="thirdviztitle"><!--Name of 3rd Viz-->Correlation Matrix</h4>
+                  <a href="#" class="btn btn-primary" id="thirdvizbtn" onclick="showThirdViz()" >Correlation between developers and avg play time<!--Click here to expand fourth visualization--></a>
+                </div>
+              </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <img class="card-img-top" src="https://webagestoredzc15.blob.core.windows.net/project-test/scatterplot.png" alt="Card image">
+                <div class="card-body">
+                  <h4 class="card-title" id="fourthviztitle"><!--Name of 4th Viz-->Scatter Plot</h4>
+                  <a href="#" class="btn btn-primary"id="fourthvizbtn" onclick="showFourthViz()" >Top 10 genres with highest average play time<!--Click here to expand fourth visualization--></a>
+                </div>
+              </div>
+        </div>
+
+        </div>
+    <div class="col-sm-1"></div>
+
+</div>
+
+    </div>
+</div>
+  
+
+<div class="container">
+
+</div>
+
+
+<script>
+  function showFirstViz() {
+    document.getElementById("firstviztitle").style.color = "#e28743"
+    document.getElementById("firstvizbtn").style.background = "#e28743"
+    document.getElementById("mainviz").src="{{ url_for('viz1') }}";
+//    document.getElementById("mainviztitle").replace("xyz", "zyx") ;
+  }
+
+  function showSecondViz() {
+    document.getElementById("secondviztitle").style.color = "#e28743"
+    document.getElementById("secondvizbtn").style.background = "#e28743"
+    document.getElementById("mainviz"). src="https://webagestoredzc15.blob.core.windows.net/project-test/barplot.png"
+  }
+
+  function showThirdViz() {
+    document.getElementById("thirdviztitle").style.color = "#e28743"
+    document.getElementById("thirdvizbtn").style.background = "#e28743"
+    document.getElementById("mainviz").src="https://webagestoredzc15.blob.core.windows.net/project-test/correlationmatrix.png";
+  }
+  
+  function showFourthViz() {
+    document.getElementById("fourthviztitle").style.color = "#e28743"
+    document.getElementById("fourthvizbtn").style.background = "#e28743"
+    document.getElementById("mainviz").src="https://webagestoredzc15.blob.core.windows.net/project-test/scatterplot.png";
+  }
+
+  </script>
+
+<!--<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>  
+<script type='text/javascript'>  var graphs = {{graphJSON | safe}};  Plotly.plot('chart',graphs,{});</script>  --> 
+
+
+
+
+</body>
+</html>
