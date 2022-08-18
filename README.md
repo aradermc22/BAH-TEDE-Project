@@ -17,4 +17,5 @@ We chose to create an Azure Web Application that displays visualizations of diff
 
 
 To run the program locally, the correct drivers for sql must be installed if not already installed on your machine. The link to the download is here: https://www.microsoft.com/en-us/download/details.aspx?id=56567
+
 Along with the above, the imports must be installed from the requirements.txt document. 
