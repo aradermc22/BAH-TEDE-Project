@@ -19,9 +19,6 @@ variables:
   # Environment name
   environmentName: 'project-demo'
 
-  # Project root folder. Point to the folder containing manage.py file.
-  projectRoot: $(System.DefaultWorkingDirectory)
-
   # Python version: 3.7
   pythonVersion: '3.8'
 
@@ -39,8 +36,8 @@ stages:
       displayName: 'Use Python $(pythonVersion)'
 
     - script: |
-        python -m venv antenv
-        source antenv/bin/activate
+        python -m venv env
+        source env/bin/activate
         python -m pip install --upgrade pip
         pip install setup
         pip install -r requirements.txt
